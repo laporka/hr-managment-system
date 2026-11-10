@@ -5,8 +5,9 @@ const Employee = require('./models/Employee');
 
 const app = express();
 
-app.use(cors());
 app.use(express.json());
+app.use(cors());
+
 
 
 mongoose.connect('mongodb://127.0.0.1:27017/hr_database')
@@ -26,11 +27,11 @@ app.get('/api/employees', async (req, res) => {
 
 app.post('/api/employees', async (req, res) => {
     const employee = new Employee({
-        fullname: req.body.fullname,
+        fullName: req.body.fullName,
         position: req.body.position,
         phone: req.body.phone,
         hireDate: req.body.hireDate,
-        salary: req/body.salary
+        salary: req.body.salary
     });
 
     try{
@@ -44,7 +45,7 @@ app.post('/api/employees', async (req, res) => {
 
 app.put('/api/employees/:id', async (req, res) => {
     try{
-        const updateEmployee = await Employee.fintByIdAndUpdate(
+        const updateEmployee = await Employee.findByIdAndUpdate(
             req.params.id,
             req.body,
             { new: true }
@@ -56,12 +57,12 @@ app.put('/api/employees/:id', async (req, res) => {
 });
 
 
-app.delete('/api/amployees/:id', async (req, res) => {
+app.delete('/api/employees/:id', async (req, res) => {
     try{
         await Employee.findByIdAndDelete(req.params.id);
         res.json({ message: 'Employee deleted' });
     } catch (err) {
-        rees.status(500).json({  message: err.message });
+        res.status(500).json({  message: err.message });
     }
 });
 
